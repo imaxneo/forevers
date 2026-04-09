@@ -1,4 +1,4 @@
-import { ActivityItem, SquareRecord, WallStats } from "@/lib/types";
+﻿import { ActivityItem, SquareRecord, WallStats } from "@/lib/types";
 
 const names = [
   ["Ahmed", "Sara"],
@@ -16,9 +16,9 @@ const names = [
 ];
 
 const messages = [
-  "من أول نظرة عرفت أنك الأجمل ❤️",
-  "كل يوم معك هدية من الله",
-  "حبيبتي إلى الأبد",
+  "Ù…Ù† Ø£ÙˆÙ„ Ù†Ø¸Ø±Ø© Ø¹Ø±ÙØª Ø£Ù†Ùƒ Ø§Ù„Ø£Ø¬Ù…Ù„ â¤ï¸",
+  "ÙƒÙ„ ÙŠÙˆÙ… Ù…Ø¹Ùƒ Ù‡Ø¯ÙŠØ© Ù…Ù† Ø§Ù„Ù„Ù‡",
+  "Ø­Ø¨ÙŠØ¨ØªÙŠ Ø¥Ù„Ù‰ Ø§Ù„Ø£Ø¨Ø¯",
   "Every day with you feels like the beginning.",
   "You are still my favorite hello and my hardest goodbye.",
   "Together, we made ordinary days feel golden."
@@ -45,14 +45,14 @@ export const heroCopy = {
   headline: "Your love, immortalized forever.",
   subline:
     "Reserve a square on The Love Wall, a digital monument where 10,000 couples leave a permanent mark of devotion.",
-  cta: "Reserve Your Square ❤️"
+  cta: "Reserve Your Square â¤ï¸"
 };
 
 export const pricing = {
   basic: { label: "Classic", tagline: "Your love, your square", amount: 9, cadence: "/year" },
   featured: {
     label: "Forever",
-    tagline: "The most popular choice ⭐",
+    tagline: "The most popular choice â­",
     amount: 19,
     cadence: "forever"
   },
@@ -94,9 +94,11 @@ export const localSpotlightSquare: SquareRecord = {
   name1: "Imad",
   name2: "Toha",
   start_date: "2021-05-04",
-  message: "يا توحة، أسأل الله دائمًا أن يجمعنا بالحلال وأن تكوني نصيبي في الدنيا والآخرة.",
+  message: `فيكِ شيء جعلني أطمئن بطريقة لم أعرفها من قبل… وكأن قلبي اختارك دون تردد.
+أريدك أنتِ، ليس لوقتٍ مؤقت… بل لعمرٍ كامل.
+وأدعو الله بكل صدق أن تكوني نصيبي`,
   photo_url:
-    "https://ui-avatars.com/api/?name=I%2BT&background=8b1538&color=ffffff&size=512&bold=true&format=png",
+    "/images/khrf.jpg",
   plan: "featured",
   stripe_session_id: null,
   is_active: true,
@@ -124,3 +126,6 @@ export const demoActivity: ActivityItem[] = seedSquares.slice(0, 5).map((square)
   country_code: square.country_code,
   created_at: square.created_at
 }));
+
+
+

@@ -3765,7 +3765,7 @@ body::before {
   }
 
   .booking-flow-footer .btn-secondary,
-  .booking-flow-footer .cta-primary {
+.booking-flow-footer .cta-primary {
     width: 100%;
   }
 }
@@ -3789,5 +3789,173 @@ body::before {
   }
   50% {
     opacity: 0.55;
+  }
+}
+
+.love-card-shell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: calc(100vh - 7rem);
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.love-card-hearts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.love-card-heart {
+  position: absolute;
+  color: #ff9fc6;
+  text-shadow:
+    0 0 12px rgba(255, 142, 194, 0.84),
+    0 0 24px rgba(255, 206, 226, 0.54);
+  opacity: 0.9;
+  animation: love-card-heart-float 3.6s ease-in-out infinite;
+}
+
+.love-card-heart-burst {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffd2e8;
+  font-size: clamp(2rem, 7vw, 3.2rem);
+  text-shadow:
+    0 0 22px rgba(255, 157, 207, 0.92),
+    0 0 42px rgba(255, 221, 236, 0.64);
+  animation: love-card-burst 2.1s ease-in-out infinite;
+}
+
+.love-card {
+  position: relative;
+  z-index: 1;
+  width: min(92vw, 430px);
+  border-radius: 1.35rem;
+  border: 1px solid rgba(255, 207, 218, 0.35);
+  background:
+    radial-gradient(circle at 86% 8%, rgba(255, 194, 218, 0.2), rgba(255, 194, 218, 0) 40%),
+    radial-gradient(circle at 12% 92%, rgba(255, 165, 196, 0.16), rgba(255, 165, 196, 0) 44%),
+    linear-gradient(168deg, #8f123f 0%, #741139 45%, #5b0d2d 100%);
+  box-shadow:
+    0 22px 46px rgba(42, 7, 19, 0.42),
+    inset 0 0 0 1px rgba(255, 228, 236, 0.14);
+  padding: 1rem;
+}
+
+.love-card-reveal {
+  opacity: 0;
+  transform: translateY(22px) scale(0.985);
+  transition: opacity 680ms ease, transform 680ms ease;
+}
+
+.love-card-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.love-card-head {
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 216, 229, 0.24);
+  padding-bottom: 0.7rem;
+}
+
+.love-card-badge {
+  width: fit-content;
+  margin: 0 auto;
+  border: 1px solid rgba(255, 226, 169, 0.52);
+  border-radius: 9999px;
+  padding: 0.22rem 0.58rem;
+  font-family: var(--font-dm-mono), monospace;
+  font-size: 0.63rem;
+  letter-spacing: 0.14em;
+  color: #ffe8bf;
+}
+
+.love-card-title {
+  margin-top: 0.5rem;
+  font-family: var(--font-playfair), serif;
+  font-style: italic;
+  font-size: clamp(1.8rem, 5vw, 2.45rem);
+  color: #fff5fa;
+  line-height: 1.05;
+}
+
+.love-card-sub {
+  margin-top: 0.3rem;
+  color: rgba(255, 224, 236, 0.9);
+  font-size: 0.9rem;
+}
+
+.love-card-photo-wrap {
+  margin-top: 0.75rem;
+  border-radius: 0.95rem;
+  border: 1px solid rgba(255, 218, 232, 0.34);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.42rem;
+}
+
+.love-card-photo {
+  width: 100%;
+  height: 210px;
+  border-radius: 0.72rem;
+  object-fit: cover;
+  object-position: center;
+}
+
+.love-card-message {
+  margin: 0.8rem 0 0;
+  border-radius: 0.88rem;
+  border: 1px solid rgba(255, 209, 226, 0.34);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.72rem 0.78rem;
+  color: #fff2f8;
+  line-height: 1.8;
+  font-size: 1rem;
+  white-space: pre-line;
+}
+
+.love-card-meta {
+  margin-top: 0.65rem;
+  text-align: center;
+  color: #ffe6bc;
+  font-family: var(--font-dm-mono), monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+}
+
+.love-card-actions {
+  margin-top: 0.76rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+@keyframes love-card-heart-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.9);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(0, -16px, 0) scale(1.16);
+    opacity: 1;
+  }
+}
+
+@keyframes love-card-burst {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(0.7);
+    opacity: 0.28;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.18);
+    opacity: 0.92;
   }
 }
