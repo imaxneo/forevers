@@ -10,6 +10,7 @@ const TOTAL_STARS = GRID_SIZE * GRID_SIZE;
 const BASE_CELL_SIZE = 28;
 const MIN_ZOOM = 0.45;
 const MAX_ZOOM = 1.85;
+const SPOTLIGHT_POSITION = 5050;
 
 const HERO_STAR_POINTS = [
   { x: 50, y: 0 },
@@ -103,7 +104,13 @@ export function UniverseExplorer({
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragState, setDragState] = useState<DragState | null>(null);
-  const [selectedPosition, setSelectedPosition] = useState<number | null>(null);
+  const hasSpotlight = useMemo(
+    () => squares.some((square) => square.grid_position === SPOTLIGHT_POSITION),
+    [squares]
+  );
+  const [selectedPosition, setSelectedPosition] = useState<number | null>(
+    hasSpotlight ? SPOTLIGHT_POSITION : null
+  );
   const [searchValue, setSearchValue] = useState("");
   const [searchError, setSearchError] = useState<string | null>(null);
   const reservedMap = useMemo(() => new Map(squares.map((s) => [s.grid_position, s])), [squares]);
@@ -199,6 +206,23 @@ export function UniverseExplorer({
             ctx.fillStyle = fillColor;
             drawHeroStar(ctx, px, py, radius * 1.38);
             ctx.fill();
+
+            if (pos === SPOTLIGHT_POSITION) {
+              const highlightHalo = ctx.createRadialGradient(px, py, radius * 0.4, px, py, radius * 8.2);
+              highlightHalo.addColorStop(0, "rgba(255, 247, 211, 0.34)");
+              highlightHalo.addColorStop(0.42, "rgba(255, 194, 224, 0.24)");
+              highlightHalo.addColorStop(1, "rgba(255, 255, 255, 0)");
+              ctx.fillStyle = highlightHalo;
+              ctx.beginPath();
+              ctx.arc(px, py, radius * 8.2, 0, Math.PI * 2);
+              ctx.fill();
+
+              ctx.strokeStyle = "rgba(248, 216, 118, 0.9)";
+              ctx.lineWidth = 2.2;
+              ctx.beginPath();
+              ctx.arc(px, py, Math.max(5, radius * 3.2), 0, Math.PI * 2);
+              ctx.stroke();
+            }
 
           } else {
             const fillColor =

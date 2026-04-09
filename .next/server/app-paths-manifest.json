@@ -1,3 +1,12 @@
 {
-  "/book/page": "app/book/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/create-checkout/route": "app/api/create-checkout/route.js",
+  "/api/upload-photo/route": "app/api/upload-photo/route.js",
+  "/book/page": "app/book/page.js",
+  "/api/webhook/route": "app/api/webhook/route.js",
+  "/page": "app/page.js",
+  "/reserve/page": "app/reserve/page.js",
+  "/stars/page": "app/stars/page.js",
+  "/success/page": "app/success/page.js",
+  "/square/[id]/page": "app/square/[id]/page.js"
 }
