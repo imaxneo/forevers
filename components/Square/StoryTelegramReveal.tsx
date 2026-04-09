@@ -7,9 +7,10 @@ import { useEffect, useMemo, useState } from "react";
 
 import { CopySquareLinkButton } from "@/components/Share/CopySquareLinkButton";
 import { SquareRecord } from "@/lib/types";
-import { buildImageFallback, formatCouple, formatStartDate, getDurationLabel } from "@/lib/utils";
+import { formatStartDate, getDurationLabel } from "@/lib/utils";
 
 const SPOTLIGHT_ID = "f0f14d7b-27b2-4e1f-ac88-8a57d457c93d";
+const PARTNER_NAME = "Touha";
 
 const HEARTS = [
   { x: 6, y: 12, d: 0, s: 15 },
@@ -27,6 +28,8 @@ const HEARTS = [
 export function StoryTelegramReveal({ square }: { square: SquareRecord }) {
   const [opened, setOpened] = useState(false);
   const [showSideHearts, setShowSideHearts] = useState(true);
+  const [showFinalWhiteScreen, setShowFinalWhiteScreen] = useState(false);
+  const [remainingSeconds, setRemainingSeconds] = useState(10);
 
   const preferredMessage = `فيكِ شيء جعلني أطمئن بطريقة لم أعرفها من قبل… وكأن قلبي اختارك دون تردد.
 أريدك أنتِ، ليس لوقتٍ مؤقت… بل لعمرٍ كامل.
@@ -36,7 +39,8 @@ export function StoryTelegramReveal({ square }: { square: SquareRecord }) {
   const displayMessage =
     square.id === SPOTLIGHT_ID ? preferredMessage : looksBrokenText ? preferredMessage : square.message;
 
-  const photoSrc = square.photo_url ?? buildImageFallback(formatCouple(square));
+  const displayCouple = `${square.name1?.trim() || "My Love"} & ${PARTNER_NAME}`;
+  const photoSrc = "/images/khrf.jpg";
 
   const sideHearts = useMemo(
     () =>
@@ -60,6 +64,19 @@ export function StoryTelegramReveal({ square }: { square: SquareRecord }) {
     []
   );
 
+  const confettiBits = useMemo(
+    () =>
+      Array.from({ length: 22 }, (_, index) => ({
+        id: `confetti-${index}`,
+        left: 5 + ((index * 17) % 90),
+        delay: (index % 8) * 0.25,
+        duration: 5.4 + (index % 5) * 0.55,
+        drift: -18 + (index % 7) * 6,
+        hue: index % 4
+      })),
+    []
+  );
+
   useEffect(() => {
     const t = window.setTimeout(() => setOpened(true), 950);
     return () => window.clearTimeout(t);
@@ -69,6 +86,22 @@ export function StoryTelegramReveal({ square }: { square: SquareRecord }) {
     const t = window.setTimeout(() => setShowSideHearts(false), 4700);
     return () => window.clearTimeout(t);
   }, []);
+
+  useEffect(() => {
+    if (!opened) return;
+    setRemainingSeconds(10);
+    const interval = window.setInterval(() => {
+      setRemainingSeconds((prev) => {
+        if (prev <= 1) {
+          window.clearInterval(interval);
+          setShowFinalWhiteScreen(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => window.clearInterval(interval);
+  }, [opened]);
 
   return (
     <section className="love-card-shell">
@@ -125,25 +158,43 @@ export function StoryTelegramReveal({ square }: { square: SquareRecord }) {
         ))}
         <span className="love-card-heart-burst">♥</span>
       </div>
+      <div className="love-confetti" aria-hidden>
+        {confettiBits.map((bit) => (
+          <span
+            key={bit.id}
+            className={`love-confetti-bit tone-${bit.hue}`}
+            style={
+              {
+                left: `${bit.left}%`,
+                animationDelay: `${bit.delay}s`,
+                animationDuration: `${bit.duration}s`,
+                ["--confetti-drift"]: `${bit.drift}px`
+              } as CSSProperties
+            }
+          />
+        ))}
+      </div>
 
       <article className={`love-card love-card-reveal ${opened ? "is-visible" : ""}`}>
+        {opened && !showFinalWhiteScreen ? <span className="love-countdown-badge">{remainingSeconds}</span> : null}
+        <p className="love-celebrate-banner">Love Victory Celebration · {PARTNER_NAME}</p>
         <header className="love-card-head">
           <p className="love-card-badge">بطاقة حب</p>
-          <h1 className="love-card-title">{formatCouple(square)}</h1>
+          <h1 className="love-card-title">{displayCouple}</h1>
           <p className="love-card-sub">
             منذ {formatStartDate(square.start_date)} · {getDurationLabel(square.start_date)}
           </p>
         </header>
 
         <div className="love-card-photo-wrap">
-          <Image src={photoSrc} alt={formatCouple(square)} width={1100} height={1100} className="love-card-photo" priority />
+          <Image src={photoSrc} alt={displayCouple} width={1100} height={1100} className="love-card-photo" priority />
         </div>
 
         <p className="love-card-message" dir="rtl" lang="ar">
           {displayMessage}
         </p>
 
-        <p className="love-card-meta">⭐ #{square.grid_position.toLocaleString()}</p>
+        <p className="love-card-meta">⭐ #{square.grid_position.toLocaleString()} · Partner: {PARTNER_NAME}</p>
 
         <footer className="love-card-actions">
           <CopySquareLinkButton squareId={square.id} />
@@ -152,6 +203,12 @@ export function StoryTelegramReveal({ square }: { square: SquareRecord }) {
           </Link>
         </footer>
       </article>
+
+      {showFinalWhiteScreen ? (
+        <div className="love-final-screen" aria-live="polite">
+          <p>متوالفيش بزاف معزة</p>
+        </div>
+      ) : null}
     </section>
   );
 }

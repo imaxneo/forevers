@@ -24,8 +24,8 @@ export default async function SquarePage({ params }: { params: { id: string } })
   }
 
   return (
-    <main className="love-page py-10 md:py-14">
-      <div className="section-shell">
+    <main className="love-page love-page-center py-4 md:py-6">
+      <div className="section-shell w-full">
         <StoryTelegramReveal square={square} />
       </div>
     </main>
