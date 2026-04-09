@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 
-import { demoActivity, demoStats, seedSquares } from "@/lib/constants";
+import { demoActivity, demoStats, localSpotlightSquare } from "@/lib/constants";
 import { ActivityItem, SquareRecord, WallStats } from "@/lib/types";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -40,7 +40,7 @@ export async function ensureExpiredSquaresDeactivated() {
 
 export async function getActiveSquares(): Promise<SquareRecord[]> {
   if (!supabase) {
-    return [];
+    return [localSpotlightSquare];
   }
   await ensureExpiredSquaresDeactivated();
 
@@ -51,7 +51,7 @@ export async function getActiveSquares(): Promise<SquareRecord[]> {
     .order("created_at", { ascending: false });
 
   if (error || !data) {
-    return [];
+    return [localSpotlightSquare];
   }
 
   return data as SquareRecord[];
@@ -59,7 +59,13 @@ export async function getActiveSquares(): Promise<SquareRecord[]> {
 
 export async function getWallStats(): Promise<WallStats> {
   if (!supabase) {
-    return demoStats;
+    return {
+      total_taken: 1,
+      total_remaining: 9999,
+      featured_taken: 1,
+      featured_remaining: 199,
+      vip_taken: 0
+    };
   }
   await ensureExpiredSquaresDeactivated();
 
@@ -86,7 +92,16 @@ export async function getWallStats(): Promise<WallStats> {
 
 export async function getLatestActivity(): Promise<ActivityItem[]> {
   if (!supabase) {
-    return demoActivity;
+    return [
+      {
+        id: localSpotlightSquare.id,
+        name1: localSpotlightSquare.name1,
+        name2: localSpotlightSquare.name2,
+        grid_position: localSpotlightSquare.grid_position,
+        country_code: localSpotlightSquare.country_code ?? null,
+        created_at: localSpotlightSquare.created_at
+      }
+    ];
   }
   await ensureExpiredSquaresDeactivated();
 
@@ -98,7 +113,16 @@ export async function getLatestActivity(): Promise<ActivityItem[]> {
     .limit(5);
 
   if (error || !data) {
-    return demoActivity;
+    return [
+      {
+        id: localSpotlightSquare.id,
+        name1: localSpotlightSquare.name1,
+        name2: localSpotlightSquare.name2,
+        grid_position: localSpotlightSquare.grid_position,
+        country_code: localSpotlightSquare.country_code ?? null,
+        created_at: localSpotlightSquare.created_at
+      }
+    ];
   }
 
   return data as ActivityItem[];
@@ -106,12 +130,12 @@ export async function getLatestActivity(): Promise<ActivityItem[]> {
 
 export async function getSquareById(id: string): Promise<SquareRecord | null> {
   if (!supabase) {
-    return seedSquares.find((square) => square.id === id) ?? seedSquares[0];
+    return id === localSpotlightSquare.id ? localSpotlightSquare : null;
   }
 
   const { data, error } = await supabase.from("squares").select("*").eq("id", id).single();
   if (error || !data) {
-    return null;
+    return id === localSpotlightSquare.id ? localSpotlightSquare : null;
   }
   return data as SquareRecord;
 }

@@ -88,6 +88,25 @@ export const seedSquares: SquareRecord[] = Array.from({ length: 50 }, (_, index)
   };
 });
 
+export const localSpotlightSquare: SquareRecord = {
+  id: "f0f14d7b-27b2-4e1f-ac88-8a57d457c93d",
+  grid_position: 5050,
+  name1: "Imad",
+  name2: "Toha",
+  start_date: "2021-05-04",
+  message: "يا توحة، أسأل الله دائمًا أن يجمعنا بالحلال وأن تكوني نصيبي في الدنيا والآخرة.",
+  photo_url:
+    "https://ui-avatars.com/api/?name=I%2BT&background=8b1538&color=ffffff&size=512&bold=true&format=png",
+  plan: "featured",
+  stripe_session_id: null,
+  is_active: true,
+  created_at: "2026-04-09T00:00:00.000Z",
+  expires_at: null,
+  view_count: 0,
+  country_code: "DZ",
+  email: null
+};
+
 export const demoStats: WallStats = {
   total_taken: seedSquares.length + 207,
   total_remaining: 10000 - (seedSquares.length + 207),
